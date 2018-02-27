@@ -7,9 +7,10 @@ import {
   Easing,
   TouchableWithoutFeedback } from 'react-native';
 import CircleTransition from './components/CircleTransition.js';
+import { StackNavigator } from 'react-navigation';
 
 
-export default class App extends React.Component {
+class HomeScreen extends React.Component {
 
   state = {
     customLeftMargin: 0,
@@ -23,6 +24,7 @@ export default class App extends React.Component {
       customLeftMargin: event.nativeEvent.pageX,
       customTopMargin: event.nativeEvent.pageY
     }, this.circleTransition.start());
+    this.props.navigation.navigate(id);
   };
 
   render() {
@@ -39,9 +41,8 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-
         <TouchableOpacity
-          onPress={(e) => this.handleNav(1, e)}
+          onPress={(e) => this.handleNav('Progress', e)}
           title="Progress"
           accessibilityLabel="Open your progress"
           style={progressButton}
@@ -50,7 +51,7 @@ export default class App extends React.Component {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={(e) => this.handleNav(2, e)}
+          onPress={(e) => this.handleNav('Reality', e)}
           title="Reality"
           accessibilityLabel="Open your reality"
           style={realityButton}
@@ -59,7 +60,7 @@ export default class App extends React.Component {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={(e) => this.handleNav(3, e)}
+          onPress={(e) => this.handleNav('Journal', e)}
           title="Journal"
           accessibilityLabel="Open your journal"
           style={journalButton}
@@ -68,7 +69,7 @@ export default class App extends React.Component {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={(e) => this.handleNav(4, e)}
+          onPress={(e) => this.handleNav('Dreams', e)}
           title="Dreams"
           accessibilityLabel="Open your dreams"
           style={dreamsButton}
@@ -93,10 +94,45 @@ export default class App extends React.Component {
   }
 }
 
+class ProgressScreen extends React.Component {
+  render() {
+    styles.container.backgroundColor = '#C1C1C1';
+    return (
+      <View style={styles.container}>
+        <Text>Progress Screen</Text>
+      </View>
+    );
+  }
+}
+
+const RootStack = StackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+    },
+    Progress: {
+      screen: ProgressScreen,
+    },
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
+
+
+export default class App extends React.Component {
+
+  render() {
+    return (
+      <RootStack />
+    );
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FCF9F4',
+    backgroundColor: '#FCF9F4', // white ish
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -107,11 +143,11 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     width:100,
     height:100,
-    backgroundColor:'#FFC97C',
+    backgroundColor:'#FFC97C', // yellow
     borderRadius:100,
     position: 'absolute',
   },
   text: {
-    color:'#EA7659',
+    color:'#EA7659', // orange
   },
 });
